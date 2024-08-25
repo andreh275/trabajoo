@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Anime</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .search-cart {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .search-cart input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .cart {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart img {
+            height: 30px;
+            margin-left: 5px;
+        }
+
+        .cart-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .cart-dropdown .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            color: #000;
+        }
+
+        .cart-dropdown .cart-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .cart-dropdown .cart-item span {
+            flex-grow: 1;
+        }
+
+        .cart-dropdown .cart-item button {
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .cart-dropdown .cart-item button:hover {
+            background-color: #c00;
+        }
+
+        .cart-dropdown .cart-total {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            text-align: right;
+            color: #000;
+        }
+
+        .cart:hover .cart-dropdown {
+            display: block;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .category {
+            text-align: center;
+            margin: 10px;
+        }
+
+        .category img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+        }
+
+        .product img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .product h3 {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .product span {
+            display: block;
+            margin: 10px 0;
+            color: #f00;
+        }
+
+        .product .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .product .quantity-controls button {
+            padding: 5px 10px;
+            background-color: #ddd;
+            border: 1px solid #aaa;
+            cursor: pointer;
+        }
+
+        .product .quantity-controls span {
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        .product button {
+            padding: 10px 20px;
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 10px 20px;
+        }
+
+        .whatsapp-contact {
+            color: #25d366;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+            }
+
+            .categories {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .category img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e8ddc4da-23dd-4502-b65b-378c9cfe5efa/dfgfco3-b6152a8f-bc4f-4920-a1bb-2385d1d09e9c.png/v1/fill/w_1280,h_1280/magic_guild_fairy_tail_logo_by_jormxdos_dfgfco3-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcL2U4ZGRjNGRhLTIzZGQtNDUwMi1iNjViLTM3OGM5Y2ZlNWVmYVwvZGZnZmNvMy1iNjE1MmE4Zi1iYzRmLTQ5MjAtYTFiYi0yMzg1ZDFkMDllOWMucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.B8g5nWMJ9R8j06OKsBwN2vqkB4D1KdXqsnEs3jWF1Hg" alt="Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a onclick="filterProducts('all')">Inicio</a></li>
+                <li><a onclick="filterProducts('accesorios')">Accesorios</a></li>
+                <li><a onclick="filterProducts('prendas')">Prendas de Vestir</a></li>
+                <li><a onclick="filterProducts('mangas')">Mangas</a></li>
+            </ul>
+        </nav>
+        <div class="search-cart">
+            <input type="text" placeholder="Buscar...">
+            <div class="cart">
+                <img src="https://cdn-icons-png.flaticon.com/512/8146/8146003.png" alt="Carrito">
+                <span id="cart-count" class="cart-count">0</span>
+                <div class="cart-dropdown" id="cart-dropdown">
+                    <!-- Carrito vacío -->
+                    <div class="empty-cart">
+                        <p>No hay artículos en el carrito.</p>
+                    </div>
+                    <!-- Total del carrito -->
+                    <div class="cart-total" id="cart-total">
+                        <span>Total: $0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="categories">
+            <div class="category" onclick="filterProducts('buzos-y-chaquetas')">
+                <img src="https://estilosgrado33.com/wp-content/uploads/2023/09/anime-camisetas-buzos-para-otakus-grupos-convenciones-aime-top10-2.jpg" alt="Buzos y Chaquetas">
+                <h2>Buzos y Chaquetas</h2>
+            </div>
+            <div class="category" onclick="filterProducts('fullmetal-alchemist')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZog65v_dulwa5AijyWvngSqyrCziXdc86uA&s" alt="Fullmetal Alchemist">
+                <h2>Fullmetal Alchemist</h2>
+            </div>
+            <div class="category" onclick="filterProducts('hunter-x-hunter')">
+                <img src="https://www.mundodeportivo.com/alfabeta/hero/2023/07/una-recopilacion-con-las-alturas-de-algunos-de-los-personajes-mas-resaltantes-en-hunter-x-hunter.jpg?width=768&aspect_ratio=16:9&format=nowebp" alt="Hunter x Hunter">
+                <h2>Hunter x Hunter</h2>
+            </div>
+        </section>
+
+        <section class="products">
+            
+            <div class="product" data-category="accesorios" data-id="llavero-naruto">
+                <img src="https://fbi.cults3d.com/uploaders/13977488/illustration-file/688a1ff1-19e1-483a-8ea8-742667b30497/Naruto.png" alt="Llavero Naruto">
+                <h3>Llavero Naruto</h3>
+                <span>$15.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('llavero-naruto', -1)">-</button>
+                    <span id="quantity-llavero-naruto">1</span>
+                    <button onclick="changeQuantity('llavero-naruto', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Llavero Naruto', 'https://fbi.cults3d.com/uploaders/13977488/illustration-file/688a1ff1-19e1-483a-8ea8-742667b30497/Naruto.png', 15000, document.getElementById('quantity-llavero-naruto').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="accesorios" data-id="taza-one-piece">
+                <img src="https://balamtum.com/cdn/shop/products/OneP_1200x1200.png?v=1662135886" alt="Taza One Piece">
+                <h3>Taza One Piece</h3>
+                <span>$32.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('taza-one-piece', -1)">-</button>
+                    <span id="quantity-taza-one-piece">1</span>
+                    <button onclick="changeQuantity('taza-one-piece', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Taza One Piece', 'https://balamtum.com/cdn/shop/products/OneP_1200x1200.png?v=1662135886', 25000, document.getElementById('quantity-taza-one-piece').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="accesorios" data-id="poster-kimetsu-no-yaiba">
+                <img src="https://i.pinimg.com/originals/48/95/6e/48956e364c12d65220674974fcd464a3.png" alt="poster-kimetsu-no-yaiba">
+                <h3>Poster Kimetsu no Yaiba</h3>
+                <span>$25.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('poster-kimetsu-no-yaiba', -1)">-</button>
+                    <span id="quantity-poster-kimetsu-no-yaiba">1</span>
+                    <button onclick="changeQuantity('poster-kimetsu-no-yaiba', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Poster Kimetsu no Yaiba', 'https://i.pinimg.com/originals/48/95/6e/48956e364c12d65220674974fcd464a3.png', 25000, document.getElementById('quantity-poster-kimetsu-no-yaiba').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="accesorios" data-id="llavero-attack-on-titans">
+                <img src="https://acdn.mitiendanube.com/stores/001/091/377/products/llavero-goma-attack-on-titan1-cbf99ef0c84908047016473487627418-640-0.png" alt="llavero-attack-on-titans">
+                <h3>Llavero Attack on Titans</h3>
+                <span>$15.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('llavero-attack-on-titans', -1)">-</button>
+                    <span id="quantity-llavero-attack-on-titans">1</span>
+                    <button onclick="changeQuantity('llavero-attack-on-titans', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Llavero Attack on Titans', 'https://acdn.mitiendanube.com/stores/001/091/377/products/llavero-goma-attack-on-titan1-cbf99ef0c84908047016473487627418-640-0.png', 15000, document.getElementById('quantity-llavero-attack-on-titans').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="mangas" data-id="manga-Fairy-tail">
+                <img src="https://kurogami.com/min/img/productos/2e/3e/portada-del-manga-fairy-tail-las-aventuras-de-happy-volumen-3.png" alt="manga fairy">
+                <h3>Manga Fairy Tail</h3>
+                <span>$55.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('manga-Fairy-tail', -1)">-</button>
+                    <span id="quantity-manga-Fairy-tail">1</span>
+                    <button onclick="changeQuantity('manga-Fairy-tail', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Manga Fairy Tail', 'https://kurogami.com/min/img/productos/2e/3e/portada-del-manga-fairy-tail-las-aventuras-de-happy-volumen-3.png', 55000, document.getElementById('quantity-manga-Fairy-tail').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="mangas" data-id="manga-hunter-x-hunter">
+                <img src="https://jumpg-assets.tokyo-cdn.com/secure/title/100015/title_thumbnail_portrait_list/314380.jpg?hash=MKFL2hpxoFsBEp_KgADJpg&expires=2145884400" alt="manga hunter-x-hunter">
+                <h3>Manga Hunter x Hunter</h3>
+                <span>$45.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('manga-hunter-x-hunter', -1)">-</button>
+                    <span id="quantity-manga-hunter-x-hunter">1</span>
+                    <button onclick="changeQuantity('manga-hunter-x-hunter', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Manga Hunter x Hunter', 'https://jumpg-assets.tokyo-cdn.com/secure/title/100015/title_thumbnail_portrait_list/314380.jpg?hash=MKFL2hpxoFsBEp_KgADJpg&expires=2145884400', 45000, document.getElementById('quantity-manga-hunter-x-hunter').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="mangas" data-id="manga-jojos-bizarre">
+                <img src="https://images.cdn2.buscalibre.com/fit-in/360x360/67/75/6775ee453d23f7caf0db20e0563d1aa7.jpg" alt="manga jojos">
+                <h3>Manga Jojos Bizarre</h3>
+                <span>$55.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('manga-jojos-bizarre', -1)">-</button>
+                    <span id="quantity-manga-jojos-bizarre">1</span>
+                    <button onclick="changeQuantity('manga-jojos-bizarre', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Manga Jojos Bizarre', 'https://images.cdn2.buscalibre.com/fit-in/360x360/67/75/6775ee453d23f7caf0db20e0563d1aa7.jpg', 55000, document.getElementById('quantity-manga-jojos-bizarre').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="mangas" data-id="manga-berserk">
+                <img src="https://www.gutsberserk.com/wp-content/uploads/2022/01/Berserk-manga-vol.png" alt="manga berserk">
+                <h3>Manga Berserk</h3>
+                <span>$65.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('manga-berserk', -1)">-</button>
+                    <span id="quantity-manga-berserk">1</span>
+                    <button onclick="changeQuantity('manga-berserk', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Manga Berserk', 'https://www.gutsberserk.com/wp-content/uploads/2022/01/Berserk-manga-vol.png', 65000, document.getElementById('quantity-manga-berserk').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="prendas" data-id="buzo-jujutsu-kaisen">
+                <img src="https://www.jako.com.co/cdn/shop/files/021NERO.jpg?v=1695333084&width=1445" alt="buzo-jujutsu-kaisen">
+                <h3>Buzo Jujutsu Kaisen</h3>
+                <span>$95.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('buzo-jujutsu-kaisen', -1)">-</button>
+                    <span id="quantity-buzo-jujutsu-kaisen">1</span>
+                    <button onclick="changeQuantity('buzo-jujutsu-kaisen', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Buzo Jujutsu Kaisen', 'https://www.jako.com.co/cdn/shop/files/021NERO.jpg?v=1695333084&width=1445', 95000, document.getElementById('quantity-buzo-jujutsu-kaisen').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="prendas" data-id="camiseta-haikyuu">
+                <img src="https://static.wixstatic.com/media/6b981e_ead79c5dd3c04102966565c8d0dbe0aa~mv2.png/v1/fill/w_1000,h_1002,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/6b981e_ead79c5dd3c04102966565c8d0dbe0aa~mv2.png" alt="camiseta-haikyuu">
+                <h3>Camiseta Haikyuu</h3>
+                <span>$85.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('camiseta-haikyuu', -1)">-</button>
+                    <span id="quantity-camiseta-haikyuu">1</span>
+                    <button onclick="changeQuantity('camiseta-haikyuu', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Camiseta Haikyuu', 'https://static.wixstatic.com/media/6b981e_ead79c5dd3c04102966565c8d0dbe0aa~mv2.png/v1/fill/w_1000,h_1002,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/6b981e_ead79c5dd3c04102966565c8d0dbe0aa~mv2.png', 85000, document.getElementById('quantity-camiseta-haikyuu').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="prendas" data-id="camisa-sukuna">
+                <img src="https://aika-store.com/cdn/shop/files/polomodelodelantero.jpg?v=1697257744&width=1445" alt="camisa-sukuna">
+                <h3>Camisa de Compresión Sukuna</h3>
+                <span>$75.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('camisa-sukuna', -1)">-</button>
+                    <span id="quantity-camisa-sukuna">1</span>
+                    <button onclick="changeQuantity('camisa-sukuna', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Camisa de Compresión Sukuna', 'https://aika-store.com/cdn/shop/files/polomodelodelantero.jpg?v=1697257744&width=1445', 75000, document.getElementById('quantity-camisa-sukuna').textContent)">Seleccionar opciones</button>
+            </div>
+            <div class="product" data-category="prendas" data-id="camisa-toji">
+                <img src="https://aika-store.com/cdn/shop/files/queda_c93463ab-48f0-4367-b39a-ea3c81fc5535.png?v=1702058112&width=416" alt="camisa-toji">
+                <h3>Camisa de Compresión Toji</h3>
+                <span>$105.000</span>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('camisa-toji', -1)">-</button>
+                    <span id="quantity-camisa-toji">1</span>
+                    <button onclick="changeQuantity('camisa-toji', 1)">+</button>
+                </div>
+                <button onclick="addToCart('Camisa de Compresión Toji', 'https://aika-store.com/cdn/shop/files/queda_c93463ab-48f0-4367-b39a-ea3c81fc5535.png?v=1702058112&width=416', 105000, document.getElementById('quantity-camisa-toji').textContent)">Seleccionar opciones</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Tienda Anime. Todos los derechos reservados.</p>
+        <p>Contacto: <a href="https://wa.me/573001234567" class="whatsapp-contact">WhatsApp</a></p>
+    </footer>
+
+    <script>
+        const cart = [];
+        let cartCount = 0;
+        let cartItems = [];
+
+        function addToCart(name, image, price, quantity) {
+            const productName = `Producto ${cartCount + 1}`;
+            cartItems.push(productName);
+            cartCount++;
+            document.getElementById('cart-count').textContent = cartCount;
+            const existingProductIndex = cart.findIndex(item => item.name === name);
+            if (existingProductIndex !== -1) {
+                cart[existingProductIndex].quantity += parseInt(quantity);
+            } else {
+                cart.push({ name, image, price, quantity: parseInt(quantity) });
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartDropdown = document.getElementById('cart-dropdown');
+            cartDropdown.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartDropdown.innerHTML = '<div class="empty-cart"><p>No hay artículos en el carrito.</p></div>';
+                document.getElementById('cart-total').textContent = '$0';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <span>${item.name} (${item.quantity}) - $${item.price * item.quantity}</span>
+                    <button onclick="removeFromCart(${index})">Eliminar</button>
+                `;
+                cartDropdown.appendChild(cartItem);
+            });
+
+            const cartTotal = document.createElement('div');
+            cartTotal.className = 'cart-total';
+            cartTotal.innerHTML = `<span>Total: $${total}</span>`;
+            cartDropdown.appendChild(cartTotal);
+        }
+
+
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        function changeQuantity(id, delta) {
+            const quantityElement = document.getElementById(`quantity-${id}`);
+            let quantity = parseInt(quantityElement.textContent);
+            quantity = Math.max(1, quantity + delta);
+            quantityElement.textContent = quantity;
+        }
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                if (category === 'all' || product.getAttribute('data-category') === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+        
+    </script>
+</body>
+</html>
